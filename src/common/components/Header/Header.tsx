@@ -1,6 +1,6 @@
-import { Path } from '@/common/routing/Routing.tsx'
 import { NavLink } from 'react-router'
 import s from './Header.module.css'
+import { Path } from '@/common/routing'
 
 const navItems = [
   { to: Path.Main, label: 'Main' },
@@ -15,9 +15,11 @@ export const Header = () => {
       <nav>
         <ul className={s.list}>
           {navItems.map((item) => (
-            <NavLink to={item.to} className={({ isActive }) => `link ${isActive ? s.activeLink : ''}`}>
-              {item.label}
-            </NavLink>
+            <li key={item.to}>
+              <NavLink to={item.to} className={({ isActive }) => `link ${isActive ? s.activeLink : ''}`}>
+                {item.label}
+              </NavLink>
+            </li>
           ))}
         </ul>
       </nav>
