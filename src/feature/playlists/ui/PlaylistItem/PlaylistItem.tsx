@@ -1,5 +1,7 @@
 import { useDeletePlaylistMutation } from '@/feature/playlists/api/playlistsApi.ts'
 import type { PlaylistData } from '@/feature/playlists/api/PlaylistsApi.types.ts'
+import { PlaylistCover } from '@/feature/playlists/ui/PlaylistItem/PlaylistCover/PlaylistCover.tsx'
+import { PlaylistDescription } from '@/feature/playlists/ui/PlaylistItem/PlaylistDescription/PlaylistDescription.tsx'
 
 type Props = {
   playlist: PlaylistData
@@ -17,9 +19,10 @@ export const PlaylistItem = ({ playlist, editPlaylistHandler }: Props) => {
 
   return (
     <div>
-      <div>title: {playlist.attributes.title}</div>
-      <div>description: {playlist.attributes.description}</div>
-      <div>userName: {playlist.attributes.user.name}</div>
+      <PlaylistCover playlistId={playlist.id} images={playlist.attributes.images} />
+
+      <PlaylistDescription playlist={playlist} />
+
       <button onClick={() => deletePlaylistHandler(playlist.id)}>delete</button>
       <button onClick={() => editPlaylistHandler(playlist)}>update</button>
     </div>
