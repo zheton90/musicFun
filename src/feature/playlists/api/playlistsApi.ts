@@ -1,5 +1,6 @@
 import type {
   CreatePlaylistArgs,
+  FetchPlaylistsArgs,
   PlaylistData,
   PlaylistsResponse,
   UpdatePlaylistArgs,
@@ -21,10 +22,13 @@ export const playlistsApi = baseApi.injectEndpoints({
   //   },
   // }),
   endpoints: (build) => ({
-    fetchPlaylists: build.query<PlaylistsResponse, void>({
-      query: () => `playlists`,
+    fetchPlaylists: build.query<PlaylistsResponse, FetchPlaylistsArgs>({
+      query: (params) => ({
+        url: `playlists`,
+        params,
+      }),
+      // `playlists?search=${search}&userId=569`,
       providesTags: ['playlists'],
-      //{return { url: `playlists` } },
     }),
 
     createPlaylist: build.mutation<{ data: PlaylistData }, CreatePlaylistArgs>({
