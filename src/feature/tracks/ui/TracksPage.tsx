@@ -3,8 +3,9 @@ import s from './TracksPage.module.css'
 import { useEffect, useRef } from 'react'
 
 export const TracksPage = () => {
-  const { data, hasNextPage, isFetching, isFetchingNextPage, fetchNextPage } = useFetchTracksInfiniteQuery()
-  console.log(data, hasNextPage)
+  const { data, currentData, status, hasNextPage, isFetching, isFetchingNextPage, fetchNextPage } =
+    useFetchTracksInfiniteQuery()
+  console.log(data, currentData, status)
 
   const observerRef = useRef<HTMLDivElement>(null)
 
