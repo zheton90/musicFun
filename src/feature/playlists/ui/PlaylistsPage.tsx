@@ -13,7 +13,29 @@ export const PlaylistsPage = () => {
 
   const debounceValue = useDebounceValue(search)
 
-  const { data, isLoading } = useFetchPlaylistsQuery({ search: debounceValue, pageNumber, pageSize, userId: '569' })
+  const { data, isLoading } = useFetchPlaylistsQuery({ search: debounceValue, pageNumber, pageSize })
+
+  // useEffect(() => {
+  //   if (error) {
+  //     // toast(JSON.stringify(error.data), { type: 'error', theme: 'colored' })
+  //     console.log(error)
+  //
+  //     if ('status' in error) {
+  //       const errMsg =
+  //         'error' in error
+  //           ? error.error
+  //           : (error.data as { error: string }).error ||
+  //             (error.data as { message: string }).message ||
+  //             JSON.stringify(error.data) ||
+  //             'Some error  occurred'
+  //
+  //       toast(errMsg, { type: 'error', theme: 'colored' })
+  //     } else {
+  //       const errMsg = error.message || 'Some error occurred'
+  //       toast(errMsg, { type: 'error', theme: 'colored' })
+  //     }
+  //   }
+  // }, [error])
 
   const handelSetPageSize = (size: number) => {
     setPageNumber(1)
