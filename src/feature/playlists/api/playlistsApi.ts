@@ -21,6 +21,7 @@ export const playlistsApi = baseApi.injectEndpoints({
   //     return headers
   //   },
   // }),
+
   endpoints: (build) => ({
     fetchPlaylists: build.query<PlaylistsResponse, FetchPlaylistsArgs>({
       query: (params) => ({

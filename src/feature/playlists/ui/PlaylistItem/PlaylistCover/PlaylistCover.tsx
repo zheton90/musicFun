@@ -3,7 +3,7 @@ import { useDeletePlaylistCoverMutation, useUploadPlaylistCoverMutation } from '
 import type { ChangeEvent } from 'react'
 import defaultCover from '@/assets/img/default-playlist-cover.png'
 import type { Images } from '@/common/types'
-import { toast } from 'react-toastify'
+import { errorToast } from '@/common/utils'
 
 type Props = {
   playlistId: string
@@ -22,12 +22,14 @@ export const PlaylistCover = ({ playlistId, images }: Props) => {
     if (!file) return
 
     if (!allowedType.includes(file.type)) {
-      toast('uncorrected type')
+      errorToast('uncorrected type')
+      // toast('uncorrected type')
       return
     }
 
     if (maxSize < file.size) {
-      toast('uncorrected size')
+      errorToast('uncorrected size')
+      // toast('uncorrected size')
       return
     }
 
