@@ -2,6 +2,9 @@ import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from '@reduxjs/toolk
 import { Mutex } from 'async-mutex'
 import { baseQuery } from '@/app/api/baseQuery.ts'
 import { handleErrors } from '@/common/utils'
+import { AUTH_KEYS } from '@/common/common/constants/constants.ts'
+import { isToken } from '@/common/utils/isToken.ts'
+import { baseApi } from '@/app/api/baseApi.ts'
 
 // create a new mutex
 const mutex = new Mutex()
@@ -13,18 +16,31 @@ export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, Fetch
 ) => {
   // wait until the mutex is available without locking it
   await mutex.waitForUnlock()
+
   let result = await baseQuery(args, api, extraOptions)
+
   if (result.error && result.error.status === 401) {
     // checking whether the mutex is locked
     if (!mutex.isLocked()) {
       const release = await mutex.acquire()
       try {
-        const refreshResult = await baseQuery('/refreshToken', api, extraOptions)
-        if (refreshResult.data) {
+        const refreshToken = localStorage.getItem(AUTH_KEYS.refreshToken)
+        const refreshResult = await baseQuery(
+          { url: 'auth/refresh', method: 'post', body: { refreshToken } },
+          api,
+          extraOptions,
+        )
+        if (refreshResult.data && isToken(refreshResult.data)) {
           // api.dispatch(tokenReceived(refreshResult.data))   !!!!
+          localStorage.setItem(AUTH_KEYS.accessToken, refreshResult.data.accessToken)
+          localStorage.setItem(AUTH_KEYS.refreshToken, refreshResult.data.refreshToken)
+
           // retry the initial query
           result = await baseQuery(args, api, extraOptions)
         } else {
+          // @ts-expect-error
+          api.dispatch(baseApi.endpoints.logout.intiate())
+
           // api.dispatch(loggedOut())  !!!!!
         }
       } finally {

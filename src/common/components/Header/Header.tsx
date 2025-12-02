@@ -15,6 +15,8 @@ export const Header = () => {
   const { data } = useGetMeQuery()
   const [logout] = useLogoutMutation()
 
+  console.log(data)
+
   const handlerLogout = () => logout()
 
   return (

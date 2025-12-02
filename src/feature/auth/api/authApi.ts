@@ -5,16 +5,14 @@ import { AUTH_KEYS } from '@/common/common/constants/constants.ts'
 export const authApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getMe: build.query<MeResponse, void>({
-      query: () => ({
-        url: 'auth/me',
-      }),
+      query: () => 'auth/me',
       providesTags: ['auth'],
     }),
     login: build.mutation<LoginResponse, LoginArgs>({
       query: (args) => ({
         method: 'post',
         url: 'auth/login',
-        body: { ...args, accessTokenTTL: '3m' },
+        body: { ...args, accessTokenTTL: '10s' },
       }),
       onQueryStarted: async (_args, { dispatch, queryFulfilled }) => {
         const { data } = await queryFulfilled
