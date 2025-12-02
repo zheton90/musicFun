@@ -24,7 +24,6 @@ export const handleErrors = (error: FetchBaseQueryError) => {
         break
 
       case 429:
-      case 401:
         if (isErrorWithProperty(error.data, 'message')) {
           errorToast(error.data.message)
           // toast(error.data.message, { type: 'error', theme: 'colored' })

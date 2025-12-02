@@ -5,7 +5,7 @@ import type {
   PlaylistsResponse,
   UpdatePlaylistArgs,
 } from '@/feature/playlists/api/PlaylistsApi.types.ts'
-import { baseApi } from '@/app/baseApi.ts'
+import { baseApi } from '@/app/api/baseApi.ts'
 import type { Images } from '@/common/types'
 
 export const playlistsApi = baseApi.injectEndpoints({
