@@ -19,6 +19,7 @@ export const Login = () => {
       if (!code) return
 
       window.removeEventListener('message', receiveMessage)
+
       login({
         code,
         redirectUri,

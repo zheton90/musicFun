@@ -35,8 +35,18 @@ export const handleErrors = (error: FetchBaseQueryError) => {
         break
 
       case 403:
+        if (isErrorWithDetailArray(error.data)) {
+          errorToast(trimToMaxLength(error.data.errors[0].detail))
+          // toast(trimToMaxLength(error.data.errors[0].detail), { type: 'error', theme: 'colored' })
+        } else {
+          errorToast(JSON.stringify(error.data))
+          // toast(JSON.stringify(error.data), { type: 'error', theme: 'colored' })
+        }
+        break
       case 400:
         if (isErrorWithDetailArray(error.data)) {
+          const errorMessage = error.data.errors[0].detail
+          if (errorMessage.includes('refreshToken')) return
           errorToast(trimToMaxLength(error.data.errors[0].detail))
           // toast(trimToMaxLength(error.data.errors[0].detail), { type: 'error', theme: 'colored' })
         } else {

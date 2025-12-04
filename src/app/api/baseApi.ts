@@ -3,7 +3,7 @@ import { baseQueryWithReauth } from '@/app/api/baseQueryWithReauth.ts'
 
 export const baseApi = createApi({
   reducerPath: 'baseApi',
-  tagTypes: ['playlists', 'auth'],
+  tagTypes: ['Auth', 'playlists'],
   baseQuery: baseQueryWithReauth,
   endpoints: () => ({}),
 })

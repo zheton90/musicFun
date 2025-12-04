@@ -9,6 +9,64 @@ import { baseApi } from '@/app/api/baseApi.ts'
 // create a new mutex
 const mutex = new Mutex()
 
+// ВАРИАНТ ВАЛЕРЫ
+
+// export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
+//   args,
+//   api,
+//   extraOptions,
+// ) => {
+//   // wait until the mutex is available without locking it
+//   await mutex.waitForUnlock()
+//
+//   let result = await baseQuery(args, api, extraOptions)
+//
+//   if (result.error && result.error.status === 401) {
+//     // checking whether the mutex is locked
+//     if (!mutex.isLocked()) {
+//       const release = await mutex.acquire()
+//       try {
+//         const refreshToken = localStorage.getItem(AUTH_KEYS.refreshToken)
+//
+//         const refreshResult = await baseQuery(
+//           {
+//             url: '/auth/refresh',
+//             method: 'post',
+//             body: { refreshToken },
+//           },
+//           api,
+//           extraOptions,
+//         )
+//
+//         if (refreshResult.data && isToken(refreshResult.data)) {
+//           localStorage.setItem(AUTH_KEYS.accessToken, refreshResult.data.accessToken)
+//           localStorage.setItem(AUTH_KEYS.refreshToken, refreshResult.data.refreshToken)
+//           // retry the initial query
+//           result = await baseQuery(args, api, extraOptions)
+//         } else {
+//           // @ts-expect-error
+//           api.dispatch(baseApi.endpoints.logout.initiate())
+//         }
+//       } finally {
+//         // release must be called once the mutex should be released again.
+//         release()
+//       }
+//     } else {
+//       // wait until the mutex is available without locking it
+//       await mutex.waitForUnlock()
+//       result = await baseQuery(args, api, extraOptions)
+//     }
+//   }
+//
+//   if (result.error && result.error.status !== 401) {
+//     handleErrors(result.error)
+//   }
+//
+//   return result
+// }
+
+// МОЙ ВАРИАНТ
+
 export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
   args,
   api,
@@ -39,7 +97,7 @@ export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, Fetch
           result = await baseQuery(args, api, extraOptions)
         } else {
           // @ts-expect-error
-          api.dispatch(baseApi.endpoints.logout.intiate())
+          api.dispatch(baseApi.endpoints.logout.initiate())
 
           // api.dispatch(loggedOut())  !!!!!
         }
@@ -55,6 +113,7 @@ export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, Fetch
   }
 
   if (result.error && result.error.status !== 401) {
+    debugger
     handleErrors(result.error)
   }
 

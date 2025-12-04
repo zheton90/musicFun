@@ -9,19 +9,6 @@ import { baseApi } from '@/app/api/baseApi.ts'
 import type { Images } from '@/common/types'
 
 export const playlistsApi = baseApi.injectEndpoints({
-  // reducerPath: '/playlistsApi',
-  // tagTypes: ['playlists'],
-  // baseQuery: fetchBaseQuery({
-  //   baseUrl: import.meta.env.VITE_BASE_URL,
-  //   headers: {
-  //     'API-KEY': import.meta.env.VITE_API_KEY,
-  //   },
-  //   prepareHeaders: (headers) => {
-  //     headers.set('Authorization', `Bearer ${import.meta.env.VITE_ACCESS_TOKEN}`)
-  //     return headers
-  //   },
-  // }),
-
   endpoints: (build) => {
     return {
       fetchPlaylists: build.query<PlaylistsResponse, FetchPlaylistsArgs>({
