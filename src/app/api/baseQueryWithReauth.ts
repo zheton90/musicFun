@@ -72,6 +72,7 @@ export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, Fetch
   api,
   extraOptions,
 ) => {
+  await new Promise((res) => setTimeout(res, 1000))
   // wait until the mutex is available without locking it
   await mutex.waitForUnlock()
 
@@ -113,7 +114,6 @@ export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, Fetch
   }
 
   if (result.error && result.error.status !== 401) {
-    debugger
     handleErrors(result.error)
   }
 
